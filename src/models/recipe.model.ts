@@ -94,3 +94,17 @@ export interface RecipeFilter {
   ingredient?: string; // nom d'ingrédient
   maxPrepTime?: number; // prepTime + cookTime <= maxPrepTime
 }
+
+export interface UpdateRecipeDTO {
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+  prepTime?: number;
+  cookTime?: number;
+  servings?: number;
+  difficulty?: number;
+  categoryId?: number;
+  tags?: string[];
+  ingredients?: Ingredient[];
+  steps?: string[];
+}
