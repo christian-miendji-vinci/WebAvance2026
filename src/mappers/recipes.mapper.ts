@@ -1,31 +1,64 @@
-import { NewRecipe, NewRecipeDTO, Recipe, RecipeDBO, RecipeDTO } from "../models/recipe.model";
+import { NewRecipe, NewRecipeDTO, Recipe, RecipeDBO, RecipeDTO, UpdateRecipeDTO } from "../models/recipe.model";
 
 export class RecipesMapper {
-  static toDTO(recipe: Recipe): RecipeDTO {
+   /**static toDTO(recipe: Recipe): RecipeDTO { ---------> avant
     const dto: RecipeDTO = {
-      // return {
-        ...recipe ,
-      // }
+      id: recipe.id,
+      title: recipe.title,
+      description: recipe.description,
+      prepTime: recipe.prepTime,
+      cookTime: recipe.cookTime,
+      servings: recipe.servings,
+      difficulty: recipe.difficulty,
+      categoryId: recipe.categoryId,
+      tags: recipe.tags,
+      ingredients: recipe.ingredients,
+      steps: recipe.steps,
+      authorId: recipe.authorId,
+      createdAt: recipe.createdAt.toISOString(),
+      updatedAt: recipe.updatedAt.toISOString(),
+    };
+    if (recipe.imageUrl !== undefined && recipe.imageUrl !== null) { // ----> condition ? siVraie : siFaux
+      dto.imageUrl = recipe.imageUrl;
+    }
+    return dto;
+  }**/
+  static toDTO(recipe: Recipe): RecipeDTO { // -----> après
+    const dto: RecipeDTO = {
+     ...recipe ,
+     
       createdAt: recipe.createdAt.toISOString() ,
       updatedAt: recipe.updatedAt.toISOString() ,
-      ...(recipe.imageUrl ? {imageUrl : recipe.imageUrl} : {})
+      ...(recipe.imageUrl ? {imageUrl : recipe.imageUrl} : {}) // ---> condition ? siVraie : siFaux
     } ;
     return dto ;
   }
 
-  static fromNewDTO(dto: NewRecipeDTO, authorId: number): NewRecipe {
+    /**static fromNewDTO(dto: NewRecipeDTO, authorId: number): NewRecipe { // -------------> avant
+    return {
+      title: dto.title.trim(),
+      description: dto.description.trim(),
+      imageUrl: dto.imageUrl,
+      prepTime: dto.prepTime,
+      cookTime: dto.cookTime,
+      servings: dto.servings,
+      difficulty: dto.difficulty,
+      categoryId: dto.categoryId,
+      tags: dto.tags ? dto.tags : [], // --> condition ? siVraie : siFaux
+      ingredients: dto.ingredients,
+      steps: dto.steps,
+      authorId: authorId,
+    };
+  }**/
+  static fromNewDTO(dto: NewRecipeDTO, authorId: number): NewRecipe { //---> apres
     const toDTO: NewRecipeDTO = {
       ...dto ,
-      
     } ;
-    const newRecipe : NewRecipe = {tags: [] , ...toDTO , authorId} ;
-
-    return newRecipe ;
-      
-      
+    const newRecipe : NewRecipe = {tags: [] , ...toDTO , authorId} ; //si tags existe dans toDTO rien , sinon tags :[] tableau vide de string
+   return newRecipe;
   }
 
-  static toDBO(recipe: Recipe): RecipeDBO {
+  /**static toDBO(recipe: Recipe): RecipeDBO { // ---> avant
     return {
       id: recipe.id,
       title: recipe.title,
@@ -43,9 +76,25 @@ export class RecipesMapper {
       created_at: recipe.createdAt.toISOString(),
       updated_at: recipe.updatedAt.toISOString(),
     };
-  }
+  }**/
 
-  static fromDBO(dbo: RecipeDBO): Recipe {
+  static toDBO(recipe : Recipe) : RecipeDBO { // -----> apres
+    const {imageUrl , prepTime , cookTime , categoryId , authorId , createdAt , updatedAt ,  ...rests} = recipe ;
+    return {
+      ...rests ,
+      image_url : imageUrl,
+      prep_time: prepTime ,
+      cook_time : cookTime ,
+      category_id : categoryId ,
+      author_id : authorId ,
+      created_at: createdAt.toISOString() ,
+      updated_at: updatedAt.toISOString() ,
+    }
+  }  
+
+  
+
+  /**static fromDBO(dbo: RecipeDBO): Recipe {
     return {
       id: dbo.id,
       title: dbo.title,
@@ -63,5 +112,26 @@ export class RecipesMapper {
       createdAt: new Date(dbo.created_at),
       updatedAt: new Date(dbo.updated_at),
     };
+  }**/
+ static fromDBO(dbo: RecipeDBO): Recipe {
+    const {created_at , updated_at , image_url , prep_time , cook_time , category_id ,author_id , ...rests} = dbo ;
+    return {
+      ...rests,
+      imageUrl : image_url,
+      prepTime : prep_time,
+      cookTime : cook_time,
+      categoryId: category_id,
+      authorId: author_id,
+      createdAt: new Date(created_at),
+      updatedAt: new Date(updated_at),
+    } ;
   }
+
+  static fromUpdateDTO(dto : UpdateRecipeDTO) : Partial<Recipe> {
+    return {
+      ...dto ,
+      ...(dto.tags ? {tags: dto.tags} : {}) ,
+    } ;
+  }
+
 }
