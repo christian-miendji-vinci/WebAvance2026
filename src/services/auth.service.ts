@@ -4,6 +4,7 @@ import { ERole, User } from "../models/user.model";
 import { generateFakeToken, validateFakeToken } from "../utils/auth";
 import { LoggerService } from "./logger.service";
 import { UsersService } from "./users.service";
+import { verifyToken } from "../utils/gestionJwt";
 
 export class AuthService {
   /**
@@ -23,13 +24,17 @@ export class AuthService {
    * Répond 401 si le token est absent ou invalide.
    */
   static authorize(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    const token = req.get("Authorization");
+    const token = req.get("Authorization"); // recupère le header dans le token
+
     if (!token) {
       LoggerService.error("Missing Authorization header");
       return res.sendStatus(401);
     }
 
-    let user: User | undefined = undefined;
+    const payload = verifyToken(token) ;
+    if(!payload) return res.sendStatus(401) ;
+
+    /**let user: User | undefined = undefined;
     try {
       const email = validateFakeToken(token);
       user = UsersService.getByEmail(email);
@@ -40,9 +45,9 @@ export class AuthService {
     if (!user) {
       LoggerService.error("Invalid token");
       return res.sendStatus(401);
-    }
+    }**/
 
-    req.user = user; // disponible dans les middlewares et routes suivants
+    req.user = payload ; // disponible dans les middlewares et routes suivants
     return next();
   }
 
@@ -51,8 +56,8 @@ export class AuthService {
    * Répond 403 sinon.
    */
   static isAdmin(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    if (req.user === undefined) return res.sendStatus(401);
-    if (req.user.role !== ERole.ADMIN) return res.sendStatus(403);
+    if (!req.user) return res.sendStatus(401);
+    if (req.user.role !== "admin") return res.sendStatus(403);
     return next();
   }
 }

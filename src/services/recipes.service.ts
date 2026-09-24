@@ -22,7 +22,7 @@ export class RecipesService extends AbstractService {
     const recipes = this.readRecipesDB();
     const result: Recipe[] = [];
 
-    for (const recipe of recipes) {
+     for (const recipe of recipes) {
       if (filter?.categoryId && recipe.categoryId !== filter.categoryId) { //on avait filter.categoryId === undefined
         continue;
       }
@@ -63,12 +63,15 @@ export class RecipesService extends AbstractService {
    */
   static getById(id: number): Recipe | undefined {
     const recipes = this.readRecipesDB();
-    for (const recipe of recipes) {
+
+
+    /**  for (const recipe of recipes) {
       if (recipe.id === id) {
         return recipe;
       }
-    }
-    return undefined;
+    }**/
+
+    return recipes.find((rec) => rec?.id === id);
   }
 
   /**
@@ -76,13 +79,17 @@ export class RecipesService extends AbstractService {
    */
   static getByIds(ids: number[]): Recipe[] {
     const recipes = this.readRecipesDB();
-    const result: Recipe[] = [];
+
+    /**const result: Recipe[] = [];
     for (const recipe of recipes) {
       if (ids.includes(recipe.id)) {
         result.push(recipe);
       }
-    }
-    return result;
+    }**/
+    
+      const finalResult = recipes.filter((rec) => ids.includes(rec.id)) ;
+    //return result ;
+    return finalResult ;
   }
 
   /**
@@ -94,7 +101,7 @@ export class RecipesService extends AbstractService {
 
     const recipe: Recipe = {
       id: RecipesService.getNextId(recipes),
-      title: newRecipe.title,
+      /**title: newRecipe.title,
       description: newRecipe.description,
       imageUrl: newRecipe.imageUrl,
       prepTime: newRecipe.prepTime,
@@ -105,7 +112,8 @@ export class RecipesService extends AbstractService {
       tags: newRecipe.tags,
       ingredients: newRecipe.ingredients,
       steps: newRecipe.steps,
-      authorId: newRecipe.authorId,
+      authorId: newRecipe.authorId,**/
+      ...newRecipe,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -123,7 +131,30 @@ export class RecipesService extends AbstractService {
    */
   static update(id: number, updatedRecipe: NewRecipe): Recipe | undefined {
     const recipes = this.readRecipesDB();
-    const index = recipes.findIndex((recipe) => recipe.id === id);
+    
+    const existingId = recipes.findIndex((recId) => recId?.id=== id) ;
+    if(existingId == -1) return undefined ;
+    const  recette = recipes[existingId] ;
+    
+    const currentRecipe = recipes.find(rec => rec?.id === id  ?
+       {
+         id : recette.id,
+         ...updatedRecipe ,
+         createdAt: recette.createdAt,
+         updatedAt: new Date(),
+      }: undefined
+    ) 
+
+    if(!currentRecipe) return undefined ;
+    recipes[existingId] = currentRecipe;
+    
+    if (!this.writeRecipesDB(recipes)) {
+      return undefined;
+    }
+
+    return currentRecipe ;
+    
+    /**const index = recipes.findIndex((recipe) => recipe.id === id);
     if (index === -1) return undefined;
 
     const existing = recipes[index];
@@ -148,8 +179,7 @@ export class RecipesService extends AbstractService {
     recipes[index] = recipe;
     if (!this.writeRecipesDB(recipes)) {
       return undefined;
-    }
-    return recipe;
+    }**/
   }
 
   /**
@@ -158,13 +188,37 @@ export class RecipesService extends AbstractService {
    */
   static delete(id: number): boolean {
     const recipes = this.readRecipesDB();
-    const index = recipes.findIndex((recipe) => recipe.id === id);
+
+    const recipesFinal = recipes.filter(rec => rec?.id !== id) ;
+
+    /**const index = recipes.findIndex((recipe) => recipe.id === id);
     if (index === -1) return false;
 
-    recipes.splice(index, 1);
-    if (!this.writeRecipesDB(recipes)) return false;
+    recipes.splice(index, 1);**/
+
+    if (!this.writeRecipesDB(recipesFinal)) return false;
 
     UsersService.removeFavoriteForAll(id);
     return true;
+  }
+
+
+  static updatePartialRecipe(id : number , updateRecipe : Partial<NewRecipe>) : Recipe | undefined {
+    const recipes = this.readRecipesDB() ;
+    const index = recipes.findIndex((rec) => rec.id === id) ;
+
+    if(index === -1) return undefined ;
+
+    const currentRecipe : Recipe = {
+      ...recipes[index] , // s'il ne change rien à sa recette 
+      ...updateRecipe, // s'il change quelque hose en gardant l'id
+      id , // uipdateRecipe peut ecraser recipe o,n le remet pour etre sur que ç an'arrive pas
+      createdAt: recipes[index].createdAt,
+      updatedAt : new Date() ,
+    } ;
+
+    recipes[index] = currentRecipe ;
+
+    return this.writeRecipesDB(recipes) ? currentRecipe : undefined ;
   }
 }

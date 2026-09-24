@@ -26,12 +26,15 @@ export class UsersService extends AbstractService {
    */
   static getById(id: number): User | undefined {
     const users = this.readUsersDB();
-    for (const user of users) {
+    
+
+    /**for (const user of users) {
       if (user.id === id) {
         return user;
       }
-    }
-    return undefined;
+    }*/
+
+    return users.find(u => u?.id === id);
   }
 
   /**
@@ -39,12 +42,14 @@ export class UsersService extends AbstractService {
    */
   static getByEmail(email: string): User | undefined {
     const users = this.readUsersDB();
-    for (const user of users) {
+
+    /**for (const user of users) {
       if (user!.email!.toLowerCase() === email.toLowerCase()) {
         return user;
       }
-    }
-    return undefined;
+    }**/
+
+    return users.find(user => user!.email!.toLocaleLowerCase === email.toLocaleLowerCase);
   }
 
   /**
@@ -60,11 +65,14 @@ export class UsersService extends AbstractService {
     }
 
     const user: User = {
-      id: UsersService.getNextId(users),
+      /**id: UsersService.getNextId(users),
       email: newUser.email,
       password: newUser.password, // stocké tel quel... pour l'instant
       firstName: newUser.firstName,
-      lastName: newUser.lastName,
+      lastName: newUser.lastName,**/
+
+      id : UsersService.getNextId(users) ,
+      ...newUser,
       role: ERole.USER,
       favorites: [],
       createdAt: new Date(),
@@ -72,10 +80,11 @@ export class UsersService extends AbstractService {
     };
 
     users.push(user);
-    if (!this.writeUsersDB(users)) {
+    
+    /**if (!this.writeUsersDB(users)) {
       return undefined;
-    }
-    return user;
+    }**/
+    return users?.find(usr => usr === user);
   }
 
   /**
@@ -84,11 +93,16 @@ export class UsersService extends AbstractService {
    */
   static delete(id: number): boolean {
     const users = this.readUsersDB();
-    const index = users.findIndex((user) => user.id === id);
-    if (index === -1) return false;
 
-    users.splice(index, 1);
-    return this.writeUsersDB(users);
+    const res = users.filter(u => u.id !== id) ;
+
+    //const index = users.findIndex((user) => user.id === id);
+
+    //if (index === -1) return false;
+    
+    
+    //users.splice(index, 1);
+    return this.writeUsersDB(res);
   }
 
   /**
@@ -97,15 +111,24 @@ export class UsersService extends AbstractService {
    */
   static addFavorite(userId: number, recipeId: number): User | undefined {
     const users = this.readUsersDB();
-    const user = users.find((u) => u.id === userId);
+    /**const user = users?.find((u) => u?.id === userId);
     if (!user) return undefined;
 
-    if (!user.favorites.includes(recipeId)) {
-      user.favorites.push(recipeId);
-      user.updatedAt = new Date();
+    if (!user?.favorites?.includes(recipeId)) {
+      user?.favorites?.push(recipeId);
+      user?.updatedAt ?? new Date();
       if (!this.writeUsersDB(users)) return undefined;
-    }
-    return user;
+    }**/
+    
+    const finalUser = users.find( u => u.id === userId ?
+      {
+        ...u,
+        favorites : u.favorites?.push(recipeId) ,
+        updatedAt : new Date() ,
+
+      } :  undefined
+    )
+     return finalUser ;
   }
 
   /**
@@ -114,7 +137,8 @@ export class UsersService extends AbstractService {
    */
   static removeFavorite(userId: number, recipeId: number): User | undefined {
     const users = this.readUsersDB();
-    const user = users.find((u) => u.id === userId);
+    
+   /**const user = users.find((u) => u.id === userId);
     if (!user) return undefined;
 
     const index = user.favorites.indexOf(recipeId);
@@ -122,8 +146,19 @@ export class UsersService extends AbstractService {
       user.favorites.splice(index, 1);
       user.updatedAt = new Date();
       if (!this.writeUsersDB(users)) return undefined;
-    }
-    return user;
+    }**/
+   
+    const resultUsers = users.find(u => u.id === userId ? 
+      {
+        ...u ,
+        favorites : u.favorites.filter(index => index !== recipeId) ,
+        updatedAt : new Date() ,
+      } 
+      : undefined
+    ) ;
+   
+    return resultUsers ;
+    //return undefined;
   }
 
   /**
@@ -131,15 +166,26 @@ export class UsersService extends AbstractService {
    */
   static removeFavoriteForAll(recipeId: number): boolean {
     const users = this.readUsersDB();
-    const usersCopy = {...users} ;
+    //const copie = [...users.map(user  => user.favorites)] ;
     
-    for (const user of users) {
+    /**for (const user of users) {
       const index = user.favorites.indexOf(recipeId);
       if (index !== -1) {
         user.favorites.splice(index, 1);
         user.updatedAt = new Date();
       }
-    }
-    return this.writeUsersDB(users);
+    }**/
+    
+     const miseAjour = users.map(
+      user => user.favorites.includes(recipeId) ?
+       {
+         ...user ,
+         favorites: user.favorites.filter(id => id !== recipeId) ,
+         updateAt : new Date() ,
+       }
+
+       : user ,
+    ) ; 
+    return this.writeUsersDB(miseAjour);
   }
 }
