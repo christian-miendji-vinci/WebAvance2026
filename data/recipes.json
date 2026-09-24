@@ -3,12 +3,8 @@
     "id": 1,
     "title": "Pancakes moelleux",
     "description": "Des pancakes épais et aérés pour un brunch réussi.",
-    "image_url": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
-    "prep_time": 10,
-    "cook_time": 15,
     "servings": 4,
     "difficulty": 1,
-    "category_id": 3,
     "tags": [
       "brunch",
       "sucré",
@@ -52,6 +48,10 @@
       "Incorporer le beurre fondu.",
       "Cuire des louches de pâte dans une poêle chaude, 2 minutes par face."
     ],
+    "image_url": "https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=800",
+    "prep_time": 10,
+    "cook_time": 15,
+    "category_id": 3,
     "author_id": 2,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -60,12 +60,8 @@
     "id": 2,
     "title": "Spaghetti carbonara",
     "description": "La vraie carbonara : guanciale, pecorino, oeufs et poivre. Pas de crème !",
-    "image_url": "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=800",
-    "prep_time": 10,
-    "cook_time": 15,
     "servings": 2,
     "difficulty": 2,
-    "category_id": 2,
     "tags": [
       "italien",
       "pâtes"
@@ -103,6 +99,10 @@
       "Battre les oeufs avec le pecorino râpé et le poivre.",
       "Égoutter les pâtes, les mélanger hors du feu au guanciale puis aux oeufs, en ajoutant un peu d'eau de cuisson."
     ],
+    "image_url": "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=800",
+    "prep_time": 10,
+    "cook_time": 15,
+    "category_id": 2,
     "author_id": 2,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -111,12 +111,8 @@
     "id": 3,
     "title": "Soupe de potiron",
     "description": "Un velouté d'automne tout doux, parfait avec des croûtons.",
-    "image_url": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=800",
-    "prep_time": 15,
-    "cook_time": 30,
     "servings": 4,
     "difficulty": 1,
-    "category_id": 1,
     "tags": [
       "végétarien",
       "automne",
@@ -155,6 +151,10 @@
       "Cuire 25 minutes puis mixer.",
       "Ajouter la crème, saler, poivrer."
     ],
+    "image_url": "https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?w=800",
+    "prep_time": 15,
+    "cook_time": 30,
+    "category_id": 1,
     "author_id": 3,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -163,12 +163,8 @@
     "id": 4,
     "title": "Mousse au chocolat",
     "description": "Trois ingrédients, un résultat bluffant. À préparer la veille.",
-    "image_url": "https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?w=800",
-    "prep_time": 20,
-    "cook_time": 0,
     "servings": 6,
     "difficulty": 3,
-    "category_id": 3,
     "tags": [
       "chocolat",
       "sans cuisson"
@@ -196,6 +192,10 @@
       "Monter les blancs en neige avec le sucre.",
       "Incorporer délicatement les blancs au chocolat et réfrigérer 6 heures."
     ],
+    "image_url": "https://images.unsplash.com/photo-1541783245831-57d6fb0926d3?w=800",
+    "prep_time": 20,
+    "cook_time": 0,
+    "category_id": 3,
     "author_id": 2,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -204,12 +204,8 @@
     "id": 5,
     "title": "Poulet au curry et lait de coco",
     "description": "Un curry doux et parfumé, prêt en moins de 40 minutes.",
-    "image_url": "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800",
-    "prep_time": 15,
-    "cook_time": 25,
     "servings": 4,
     "difficulty": 2,
-    "category_id": 2,
     "tags": [
       "asiatique",
       "épicé",
@@ -248,6 +244,10 @@
       "Verser le lait de coco et laisser mijoter 20 minutes.",
       "Servir avec le riz."
     ],
+    "image_url": "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=800",
+    "prep_time": 15,
+    "cook_time": 25,
+    "category_id": 2,
     "author_id": 3,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -256,12 +256,8 @@
     "id": 6,
     "title": "Guacamole",
     "description": "Frais, crémeux, à tartiner ou à tremper.",
-    "image_url": "https://images.unsplash.com/photo-1600335895229-6e75511892c8?w=800",
-    "prep_time": 10,
-    "cook_time": 0,
     "servings": 4,
     "difficulty": 1,
-    "category_id": 5,
     "tags": [
       "mexicain",
       "végétarien",
@@ -300,6 +296,10 @@
       "Ajouter le jus de citron vert, l'oignon haché et la coriandre ciselée.",
       "Saler et servir immédiatement."
     ],
+    "image_url": "https://images.unsplash.com/photo-1600335895229-6e75511892c8?w=800",
+    "prep_time": 10,
+    "cook_time": 0,
+    "category_id": 5,
     "author_id": 2,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -308,12 +308,8 @@
     "id": 7,
     "title": "Smoothie banane-fraise",
     "description": "Le petit-déjeuner à emporter.",
-    "image_url": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=800",
-    "prep_time": 5,
-    "cook_time": 0,
     "servings": 2,
     "difficulty": 1,
-    "category_id": 4,
     "tags": [
       "fruits",
       "rapide",
@@ -345,6 +341,10 @@
       "Tout mixer.",
       "Servir bien frais."
     ],
+    "image_url": "https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=800",
+    "prep_time": 5,
+    "cook_time": 0,
+    "category_id": 4,
     "author_id": 3,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -353,12 +353,8 @@
     "id": 8,
     "title": "Boeuf bourguignon",
     "description": "Le classique du dimanche, qui mijote longtemps.",
-    "image_url": "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=800",
-    "prep_time": 30,
-    "cook_time": 180,
     "servings": 6,
     "difficulty": 4,
-    "category_id": 2,
     "tags": [
       "français",
       "mijoté",
@@ -402,6 +398,10 @@
       "Remettre la viande, singer avec de la farine, mouiller avec le vin.",
       "Laisser mijoter 3 heures à couvert, ajouter les champignons 30 minutes avant la fin."
     ],
+    "image_url": "https://images.unsplash.com/photo-1608039829572-78524f79c4c7?w=800",
+    "prep_time": 30,
+    "cook_time": 180,
+    "category_id": 2,
     "author_id": 1,
     "created_at": "2026-09-01T08:00:00.000Z",
     "updated_at": "2026-09-01T08:00:00.000Z"
@@ -410,11 +410,8 @@
     "id": 9,
     "title": "Omelette aux fines herbes",
     "description": "Le plat de dépannage par excellence.",
-    "prep_time": 5,
-    "cook_time": 5,
     "servings": 1,
     "difficulty": 1,
-    "category_id": 2,
     "tags": [
       "rapide",
       "végétarien"
@@ -441,8 +438,167 @@
       "Cuire dans le beurre chaud en ramenant les bords vers le centre.",
       "Plier et servir baveuse."
     ],
+    "prep_time": 5,
+    "cook_time": 5,
+    "category_id": 2,
     "author_id": 2,
     "created_at": "2026-09-17T13:17:07.254Z",
     "updated_at": "2026-09-17T13:17:07.254Z"
+  },
+  {
+    "id": 10,
+    "title": "Omelette aux fines herbes",
+    "description": "Le plat de dépannage par excellence.",
+    "servings": 1,
+    "difficulty": 1,
+    "tags": [
+      "rapide",
+      "végétarien"
+    ],
+    "ingredients": [
+      {
+        "name": "oeuf",
+        "quantity": 3,
+        "unit": "pièce"
+      },
+      {
+        "name": "ciboulette",
+        "quantity": 1,
+        "unit": "c. à soupe"
+      },
+      {
+        "name": "beurre",
+        "quantity": 10,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Battre les oeufs avec les herbes, saler, poivrer.",
+      "Cuire dans le beurre chaud en ramenant les bords vers le centre.",
+      "Plier et servir baveuse."
+    ],
+    "prep_time": 5,
+    "cook_time": 5,
+    "category_id": 2,
+    "author_id": 2,
+    "created_at": "2026-09-17T21:27:29.598Z",
+    "updated_at": "2026-09-17T21:27:29.598Z"
+  },
+  {
+    "id": 1,
+    "tags": [
+      "rapide",
+      "végétarien"
+    ],
+    "title": "Omelette aux fines herbes",
+    "description": "Le plat de dépannage par excellence.",
+    "servings": 1,
+    "difficulty": 1,
+    "ingredients": [
+      {
+        "name": "oeuf",
+        "quantity": 3,
+        "unit": "pièce"
+      },
+      {
+        "name": "ciboulette",
+        "quantity": 1,
+        "unit": "c. à soupe"
+      },
+      {
+        "name": "beurre",
+        "quantity": 10,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Battre les oeufs avec les herbes, saler, poivrer.",
+      "Cuire dans le beurre chaud en ramenant les bords vers le centre.",
+      "Plier et servir baveuse."
+    ],
+    "prep_time": 5,
+    "cook_time": 5,
+    "category_id": 2,
+    "author_id": 1,
+    "created_at": "2026-09-20T22:39:48.081Z",
+    "updated_at": "2026-09-20T22:39:48.081Z"
+  },
+  {
+    "id": 1,
+    "tags": [
+      "rapide",
+      "végétarien"
+    ],
+    "title": "Omelette aux fines herbes",
+    "description": "Le plat de dépannage par excellence.",
+    "servings": 1,
+    "difficulty": 1,
+    "ingredients": [
+      {
+        "name": "oeuf",
+        "quantity": 3,
+        "unit": "pièce"
+      },
+      {
+        "name": "ciboulette",
+        "quantity": 1,
+        "unit": "c. à soupe"
+      },
+      {
+        "name": "beurre",
+        "quantity": 10,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Battre les oeufs avec les herbes, saler, poivrer.",
+      "Cuire dans le beurre chaud en ramenant les bords vers le centre.",
+      "Plier et servir baveuse."
+    ],
+    "prep_time": 5,
+    "cook_time": 5,
+    "category_id": 2,
+    "author_id": 1,
+    "created_at": "2026-09-21T10:38:31.156Z",
+    "updated_at": "2026-09-21T10:38:31.156Z"
+  },
+  {
+    "id": 1,
+    "tags": [
+      "rapide",
+      "végétarien"
+    ],
+    "title": "Omelette aux fines herbes",
+    "description": "Le plat de dépannage par excellence.",
+    "servings": 1,
+    "difficulty": 1,
+    "ingredients": [
+      {
+        "name": "oeuf",
+        "quantity": 3,
+        "unit": "pièce"
+      },
+      {
+        "name": "ciboulette",
+        "quantity": 1,
+        "unit": "c. à soupe"
+      },
+      {
+        "name": "beurre",
+        "quantity": 10,
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      "Battre les oeufs avec les herbes, saler, poivrer.",
+      "Cuire dans le beurre chaud en ramenant les bords vers le centre.",
+      "Plier et servir baveuse."
+    ],
+    "prep_time": 5,
+    "cook_time": 5,
+    "category_id": 2,
+    "author_id": 1,
+    "created_at": "2026-09-21T10:39:48.383Z",
+    "updated_at": "2026-09-21T10:39:48.383Z"
   }
 ]
