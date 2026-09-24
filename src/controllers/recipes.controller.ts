@@ -7,7 +7,7 @@ import { AuthService } from "../services/auth.service";
 import { CategoriesService } from "../services/categories.service";
 import { LoggerService } from "../services/logger.service";
 import { RecipesService } from "../services/recipes.service";
-import { isNewRecipeDTO, isString } from "../utils/guards";
+import { isNewRecipeDTO, isString , isUpdateRecipeDTO} from "../utils/guards";
 
 export const recipesController = Router();
 
@@ -93,6 +93,47 @@ recipesController.post("/", AuthService.authorize, (req: AuthenticatedRequest, r
   return res.status(201).json(RecipesMapper.toDTO(recipe));
 });
 
+
+/**
+ * PATH /recipes/:id
+ * modifie partiellement une recette
+ */
+recipesController.patch("/:id" , AuthService.authorize , (req : AuthenticatedRequest , res : Response) => {
+   LoggerService.info("[PATH] /recipes/:id") ;
+
+   //auth
+   if(!req.user) return res.sendStatus(401) ;
+    const user = req.user ;
+
+   // valider l'id
+   const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
+
+  //valider le body
+  const body : unknown = req.body ;
+  if(!isUpdateRecipeDTO(body)) return res.sendStatus(400); // verifier que les données sont correctes : Es ce que c'est ok ?
+
+  //verifier si la rectte existe avant modification
+   const existing = RecipesService.getById(id);
+  if (!existing) return res.sendStatus(404);
+
+  //verifier que l'utilisateur est bien l'auteur
+  if(existing.authorId !== user.id) return res.sendStatus(403) ;
+
+  //verifier la categorie
+  if (body.categoryId !== undefined  &&  !CategoriesService.getById(body.categoryId)) return res.sendStatus(400); // catégorie inconnue
+
+  //Mapper : Transforme le type c UpdateRecipeDTO en Partial<Recipe>
+  const updateRecipe = RecipesMapper.fromUpdateDTO(body) ; //Transformer les données vers la forme attendue par le service : mapper (comment je le convertis) ?
+
+  // le service peut le prendre :
+  const recipeFinal = RecipesService.updatePartialRecipe( id , updateRecipe) ;
+  if(!recipeFinal) return res.sendStatus(500) ;
+
+   return res.status(204).json(RecipesMapper.toDTO(recipeFinal));
+}) ;
+
+
 /**
  * PUT /recipes/:id
  * Remplace une recette (auteur ou admin uniquement)
@@ -100,6 +141,7 @@ recipesController.post("/", AuthService.authorize, (req: AuthenticatedRequest, r
 recipesController.put("/:id", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
   LoggerService.info("[PUT] /recipes/:id");
 
+  
   if (!req.user) return res.sendStatus(401);
   const user = req.user;
 
@@ -118,6 +160,41 @@ recipesController.put("/:id", AuthService.authorize, (req: AuthenticatedRequest,
 
   const updated = RecipesService.update(id, RecipesMapper.fromNewDTO(body, recipe.authorId));
   if (!updated) return res.sendStatus(500);
+ 
+  
+  /*const recipeId = Number(req.params.id) ;  --------------> nouvelle matière séance 3
+  const recipe = RecipesService.getById(recipeId) ;
+
+  if(!recipe) return res.sendStatus(404) ;
+
+  if(recipe.authorId !== req.user!.id && req.user!.role !== "admin") {
+    return res.sendStatus(403) // Forbidden
+  } ;
+
+  RecipesService.update(recipeId ,  req.body) ;
+  return res.sendStatus(204);*/
+
+
+  /**if (!req.user) return res.sendStatus(401); --------------> ancien code
+  const user = req.user;
+
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id) || id < 1) return res.sendStatus(400);
+
+  const body: unknown = req.body;
+  if (!isNewRecipeDTO(body)) return res.sendStatus(400);
+
+  const recipe = RecipesService.getById(id);
+  if (!recipe) return res.sendStatus(404);
+
+  if (recipe.authorId !== user.id && user.role !== ERole.ADMIN) return res.sendStatus(403);
+
+  if (!CategoriesService.getById(body.categoryId)) return res.sendStatus(400); // catégorie inconnue
+
+  const updated = RecipesService.update(id, RecipesMapper.fromNewDTO(body, recipe.authorId));
+  if (!updated) return res.sendStatus(500);*/
+
+
 
   return res.sendStatus(204);
 });
@@ -126,10 +203,13 @@ recipesController.put("/:id", AuthService.authorize, (req: AuthenticatedRequest,
  * DELETE /recipes/:id
  * Supprime une recette (auteur ou admin uniquement)
  */
-recipesController.delete("/:id", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
+recipesController.delete("/:id", AuthService.authorize, AuthService.isAdmin , (req: AuthenticatedRequest, res: Response) => {
   LoggerService.info("[DELETE] /recipes/:id");
 
-  if (!req.user) return res.sendStatus(401);
+  const recipeId = Number(req.params.id) ;
+  if(!RecipesService.getById(recipeId) ) return res.sendStatus(404) ;
+
+  /**if (!req.user) return res.sendStatus(401);
   const user = req.user;
 
   const id = Number(req.params.id);
@@ -140,7 +220,8 @@ recipesController.delete("/:id", AuthService.authorize, (req: AuthenticatedReque
 
   if (recipe.authorId !== user.id && user.role !== ERole.ADMIN) return res.sendStatus(403);
 
-  if (!RecipesService.delete(id)) return res.sendStatus(500);
-
+  if (!RecipesService.delete(id)) return res.sendStatus(500);**/
+  
+  RecipesService.delete(recipeId) ;
   return res.sendStatus(204);
 });

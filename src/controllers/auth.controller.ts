@@ -6,6 +6,7 @@ import { AuthService } from "../services/auth.service";
 import { LoggerService } from "../services/logger.service";
 import { UsersService } from "../services/users.service";
 import { isCredentialsDTO, isNewUserDTO } from "../utils/guards";
+import { generateToken } from "../utils/auth";
 
 export const authController = Router();
 
@@ -40,21 +41,34 @@ authController.post("/login", (req: Request, res: Response) => {
   const body: unknown = req.body;
   if (!isCredentialsDTO(body)) return res.sendStatus(400);
 
-  const email = body.email;
-  const password = body.password;
+  //const email = body.email;
+  //const password = body.password;
 
-  const token = AuthService.login(email, password);
-  if (!token) return res.sendStatus(401);
+  const {email , password } = body ;
+  const user = UsersService.getByEmail(email) ;
 
-  const tokenDTO: TokenDTO = { token: token };
-  return res.status(200).json(tokenDTO);
+  if(!user || user.password !== password) {
+    return res.sendStatus(401) ;
+  }
+  //const token = AuthService.login(email, password);
+  //if (!token) return res.sendStatus(401);
+
+  //const tokenDTO: TokenDTO = { token: token };
+
+  const token = generateToken({
+    id : user.id ,
+    email : user.email ,
+    role : user.role ,
+  }) ;
+
+   res.json({token}) ;
 });
 
 /**
  * GET /auth/me
  * Renvoie l'utilisateur correspondant au token
  */
-authController.get("/me", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
+/**authController.get("/me", AuthService.authorize, (req: AuthenticatedRequest, res: Response) => {
   LoggerService.info("[GET] /auth/me");
 
   if (!req.user) return res.sendStatus(401);
@@ -62,4 +76,4 @@ authController.get("/me", AuthService.authorize, (req: AuthenticatedRequest, res
 
   const userDTO: UserDTO = UsersMapper.toDTO(user);
   return res.status(200).json(userDTO);
-});
+});**/
