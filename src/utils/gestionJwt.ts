@@ -2,7 +2,7 @@ import { TokenPayLoad } from "../models/auth.model";
 import jwt from "jsonwebtoken" ;
 
 
-const SECRET_KEY = process.env.JWT_SECRET ! ;
+const SECRET_KEY = process.env.JWT_SECRET! ;
 
  export function verifyToken(token : string) : TokenPayLoad | undefined {
   try {
