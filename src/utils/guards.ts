@@ -1,4 +1,4 @@
-import { NewRecipeDTO } from "../models/recipe.model";
+import { NewRecipeDTO, UpdateRecipeDTO } from "../models/recipe.model";
 import { CredentialsDTO, NewUserDTO } from "../models/user.model";
 
 /**
@@ -62,3 +62,33 @@ export function isNewRecipeDTO(obj: any): obj is NewRecipeDTO {
   if (!Array.isArray(recipe.steps)) return false;
   return true;
 }
+
+
+// à coder !!!!!!!
+export function isUpdateRecipeDTO(obj : any): obj is UpdateRecipeDTO {
+  if (!isObject(obj)) return false;
+  const recipe = obj as any;
+
+  // Au moins un champ doit être fourni
+  if (Object.keys(recipe).length === 0) return false;
+
+  // Champs string optionnels
+  if (recipe.title !== undefined && !isNonEmptyString(recipe.title)) return false;
+  if (recipe.description !== undefined && !isString(recipe.description)) return false;
+  if (recipe.imageUrl !== undefined && !isString(recipe.imageUrl)) return false;
+
+  // Champs number optionnels avec bornes
+  if (recipe.prepTime !== undefined && (!isNumber(recipe.prepTime) || recipe.prepTime < 0)) return false;
+  if (recipe.cookTime !== undefined && (!isNumber(recipe.cookTime) || recipe.cookTime < 0)) return false;
+  if (recipe.servings !== undefined && (!isNumber(recipe.servings) || recipe.servings < 1)) return false;
+  if (recipe.difficulty !== undefined && (!isNumber(recipe.difficulty) || recipe.difficulty < 1 || recipe.difficulty > 5)) return false;
+  if (recipe.categoryId !== undefined && !isNumber(recipe.categoryId)) return false;
+
+  // Champs array optionnels
+  if (recipe.tags !== undefined && !Array.isArray(recipe.tags)) return false;
+  if (recipe.ingredients !== undefined && !Array.isArray(recipe.ingredients)) return false;
+  if (recipe.steps !== undefined && !Array.isArray(recipe.steps)) return false;
+
+  return true;
+}
+  

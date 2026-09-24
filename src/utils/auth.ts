@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken" ;
+import { TokenPayLoad } from "../models/auth.model";
 /**
  * "Fake token" : un simple encodage Base64 de l'email de l'utilisateur.
  *
@@ -14,3 +16,27 @@ export const generateFakeToken = (email: string): string => {
 export const validateFakeToken = (token: string): string => {
   return Buffer.from(token, "base64").toString("utf-8");
 };
+
+const SECRET_KEY = process.env.JWT_SECRET ! ;
+
+ export function generateToken(user : TokenPayLoad) : string {
+  return jwt.sign(
+    user,
+    SECRET_KEY,
+    {
+      expiresIn: "1d" ,
+      algorithm: "HS256" ,
+    }
+  );
+}
+
+/**const token = generateToken({
+   id :1,
+   email: "john@gmail.com",
+   role: "user", 
+}) ;
+
+console.log(token);*/
+
+
+
